@@ -2,7 +2,7 @@
 import "dotenv/config"; // isso deve ser inserido na parte mais externa do projeto
 import app from "./src/app.js";
 
-const PORT = 3000;
+const PORT = process.env.PORT; 
 
 // const server = http.createServer((request, response) => {
 //     response.writeHead(200, {"Content-Type": "text/plain"}); //Header da resposta

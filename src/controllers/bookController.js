@@ -65,6 +65,18 @@ class BookController
         }
     }
 
+    static async listBooksByPublisher(request, response)
+    {
+        const publisher = request.query.publisher;
+        try {
+            const booksByPublisher = await book.find({ publisher: publisher});
+            response.status(200).json({booksByPublisher});
+
+        } catch (error) {
+            response.status(500).json({status: false, message: `${error.message} - fail to get your book`});
+        }
+    }
+
 };
 
 export default BookController;
