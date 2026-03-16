@@ -1,9 +1,10 @@
+import NotFound from "../errors/NotFound.js";
 import book from "../models/Book.js";
 
 class BookController
 {
 
-    static async listAllBooks(request, response)
+    static async listAllBooks(request, response, next)
     {
         try {
             const bookList = await book.find({}).populate("author");
@@ -11,61 +12,81 @@ class BookController
             realmente está armazenado no livro)*/
             response.status(200).json(bookList);
         } catch (error) {
-            response.status(500).json({status: false, message: `${error.message} - fail to get your books`});
+            next(error);
         }
     }
 
-    static async listBookById(request, response)
+    static async listBookById(request, response, next)
     {
         try {
-            const specificBook = await book.findById(request.params.id).populate("author");
+            const id = request.params.id;
+            const specificBook = await book.findById(id).populate("author");
+
+            if(!specificBook) {
+                next(new NotFound("Book ID not found"));
+            }
+            
             response.status(200).json(specificBook);
         } catch (error) {
-            response.status(500).json({status: false, message: `${error.message} - fail to get your book`});
+            next(error);
         }
     }
 
-    static async listBooksByAuthor(request, response)
+    static async listBooksByAuthor(request, response, next)
     {
         try {
-            const booksByAuthor = await book.find({ author: request.params.id }).populate("author");
+            const author_id = request.params.id;
+            const booksByAuthor = await book.find({ author: author_id }).populate("author");
+            
             response.status(200).json(booksByAuthor);
         } catch (error) {
-            response.status(500).json({status: false, message: `${error.message} - fail to get books by author`});
+            next(error);
         }
     }
 
-    static async createBook(request, response)
+    static async createBook(request, response, next)
     {
         try {
             const newBook = await book.create(request.body);
             response.status(201).json({status: true, message: "New book successfully created", book: newBook});
         } catch (error) {
-            response.status(500).json({status: false, message: `${error.message} - fail to add your book`});
+            next(error);
         }
     }
 
-    static async updateBook(request, response)
+    static async updateBook(request, response, next)
     {
         try {
-            const updatedBook = await book.findByIdAndUpdate(request.params.id, request.body);
+            const id = request.params.id;
+            const updatedBook = await book.findByIdAndUpdate(id, request.body);
+
+            if(updatedBook == null){
+                next(new NotFound('Book ID not found'));
+            }
+            
             response.status(200).json(updatedBook);
         } catch (error) {
-            response.status(500).json({status: false, message: `${error.message} - fail to update your book`});
+            next(error);
         }
     }
 
-    static async deleteBook(request, response)
+    static async deleteBook(request, response, next)
     {
         try {
-            await book.findByIdAndDelete(request.params.id);
+            const id = request.params.id;
+            const deletedBook = await book.findByIdAndDelete(id);
+
+            if(deletedBook == null){
+                next(new NotFound('Book ID not found'));
+            }
+            
             response.status(200).send("Your book was successfully deleted");
         } catch (error) {
-            response.status(500).json({status: false, message: `${error.message} - fail to delete your book`});
+            next(error);
         }
     }
 
-    static async listBooksByPublisher(request, response)
+    static async listBooksByPublisher(request, response, next)
     {
         const publisher = request.query.publisher;
         try {
@@ -73,7 +94,7 @@ class BookController
             response.status(200).json({booksByPublisher});
 
         } catch (error) {
-            response.status(500).json({status: false, message: `${error.message} - fail to get your book`});
+            next(error);
         }
     }
 
