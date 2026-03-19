@@ -1,5 +1,5 @@
 import NotFound from "../errors/NotFound.js";
-import book from "../models/Book.js";
+import {book} from "../models/index.js";
 
 class BookController
 {
@@ -86,12 +86,18 @@ class BookController
         }
     }
 
-    static async listBooksByPublisher(request, response, next)
+    static async listBooksByQuery(request, response, next)
     {
-        const publisher = request.query.publisher;
+        const query = {};
+        if(request.query.publisher) query.publisher = request.query.publisher;
+        if(request.query.title) query.title = { $regex: request.query.title, $options: "i" };
+        if(request.query.minPages || request.query.maxPages) query.pages = {}; //para query.pages deixar de ser undefined
+        if(request.query.minPages) query.pages.$gte = Number(request.query.minPages); //os dados vem da query como String
+        if(request.query.maxPages) query.pages.$lte = Number(request.query.maxPages);
+
         try {
-            const booksByPublisher = await book.find({ publisher: publisher});
-            response.status(200).json({booksByPublisher});
+            const booksByQuery = await book.find(query);
+            response.status(200).json({booksByQuery});
 
         } catch (error) {
             next(error);

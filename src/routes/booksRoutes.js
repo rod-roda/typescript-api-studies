@@ -4,7 +4,7 @@ import BookController from "../controllers/bookController.js";
 const routes = express.Router();
 
 routes.get("/books", BookController.listAllBooks);
-routes.get("/books/search", BookController.listBooksByPublisher); //abordagem de rota com busca por parâmetros (?param=value)
+routes.get("/books/query", BookController.listBooksByQuery); //abordagem de rota com busca por parâmetros (?param=value)
 routes.get("/books/:id", BookController.listBookById);
 
 routes.get("/authors/:id/books", BookController.listBooksByAuthor); //abordagem RESTful de rota aninhada
