@@ -33,7 +33,7 @@ class AuthorController
         }
     }
 
-    static async createAuthor(request: Request<{}, {}, IAuthor>, response: Response, next: NextFunction): Promise<void>
+    static async createAuthor(request: Request<unknown, unknown, IAuthor>, response: Response, next: NextFunction): Promise<void>
     {
         try {
             const newAuthor: IAuthor = await author.create(request.body);

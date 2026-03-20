@@ -6,7 +6,7 @@ import NotFound from "../errors/NotFound.js";
 
 import type { Request, Response, NextFunction } from 'express';
 
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function errorsMiddleware(error: unknown, request: Request, response: Response, next: NextFunction): void { //Middleware de erro
     if (error instanceof mongoose.Error.CastError) {
         new BadRequest().sendResponse(response);

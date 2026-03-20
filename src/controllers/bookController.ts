@@ -48,7 +48,7 @@ class BookController
         }
     }
 
-    static async createBook(request: Request<{},{},IBook>, response: Response, next: NextFunction)
+    static async createBook(request: Request<unknown,unknown,IBook>, response: Response, next: NextFunction)
     {
         try {
             const newBook = await book.create(request.body);
@@ -90,7 +90,7 @@ class BookController
         }
     }
 
-    static async listBooksByQuery(request: Request<{}, {}, {}, BookQueryParams>, response: Response, next: NextFunction)
+    static async listBooksByQuery(request: Request<unknown, unknown, unknown, BookQueryParams>, response: Response, next: NextFunction)
                                 //parâmetros do tipo Request: Request<Params, ResBody, ReqBody, ReqQuery, Locals>
     {
         const query: MongoBookQuery = {};
