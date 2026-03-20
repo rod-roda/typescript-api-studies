@@ -1,25 +1,33 @@
 # Node.js API with TypeScript
 
-Introductory RESTful API project built with Node.js, Express, MongoDB and TypeScript. Developed to refresh my knowledge in NodeJS and JavaScript, followed by a complete transformation of the project to TypeScript, thus also practicing the main points of the language.
+RESTful API for managing books and authors, built as a study project to explore backend development with strong typing and modern tooling.
 
-## 📚 About the Project
+## 🎯 Why These Technologies?
 
-API for managing books and authors, demonstrating fundamental TypeScript concepts in a backend application:
+**TypeScript** was chosen to enforce strict typing and make the codebase more robust — no more "accepting anything." Defining rigid types upfront guarantees code quality and catches errors before runtime.
 
-- Static typing with interfaces
-- Express generics
-- Mongoose with typed schemas
-- Custom error handling
-- Typed middlewares
+**MongoDB** provides the flexibility needed for a learning project. Unlike relational databases, Mongo lets me structure data freely, which forces me to think critically about organization since there's nothing preventing incorrect schemas. This freedom is a double-edged sword that makes you a better data architect.
 
-## 🛠️ Technologies
+**Mongoose** simplifies MongoDB administration and schema definition, while integrating seamlessly with TypeScript through its built-in typing system. It provides structure where Mongo is flexible, without sacrificing the benefits of NoSQL.
 
-- **Node.js** - JavaScript runtime
+**Node.js + Express** was selected to run TypeScript on the backend and revisit fundamental Express concepts. Despite newer frameworks emerging, Express remains widely used in production and understanding it deeply is valuable.
+
+## 📚 What This Project Demonstrates
+
+- Static typing with interfaces and custom types
+- Express with TypeScript generics
+- Mongoose schemas with full type safety
+- Custom error handling with typed middlewares
+- Clean architecture with separation of concerns
+
+## 🛠️ Tech Stack
+
+- **Node.js 18+** - JavaScript runtime
 - **TypeScript** - Typed superset of JavaScript
-- **Express** - Web framework
-- **MongoDB** - NoSQL database
-- **Mongoose** - ODM for MongoDB
-- **tsx** - TypeScript executor for development
+- **Express** - Minimalist web framework
+- **MongoDB** - NoSQL document database
+- **Mongoose** - ODM for MongoDB with TypeScript support
+- **tsx** - Fast TypeScript executor for development
 
 ## 📋 Prerequisites
 
@@ -42,7 +50,7 @@ npm install
 ### 3. Configure environment variables
 ```bash
 cp .env.example .env
-# Edit .env with your settings
+# Edit .env with your MongoDB connection string
 ```
 
 ### 4. Run in development mode
@@ -56,23 +64,77 @@ npm run build
 npm start
 ```
 
-## 📡 Endpoints
+## 📡 API Documentation
 
-### Authors
+Base URL: `http://localhost:3000`
+
+### Response Format
+
+#### Success Response
+```json
+{
+  "_id": "507f1f77bcf86cd799439011",
+  "name": "Example Data",
+  ...
+}
+```
+
+#### Error Response
+All errors follow a consistent structure:
+```json
+{
+  "message": "Error description",
+  "status": 400
+}
+```
+
+**Common Status Codes:**
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request (invalid data or malformed ID)
+- `404` - Not Found
+- `500` - Internal Server Error
+
+### Endpoints
+
+#### Authors
 - `GET /authors` - List all authors
 - `GET /authors/:id` - Get author by ID
 - `POST /authors` - Create new author
+  ```json
+  { "name": "Author Name", "nationality": "Country" }
+  ```
 - `PUT /authors/:id` - Update author
 - `DELETE /authors/:id` - Delete author
 
-### Books
+#### Books
 - `GET /books` - List all books
 - `GET /books/:id` - Get book by ID
-- `GET /books/query` - Search with filters (publisher, title, minPages, maxPages)
-- `GET /authors/:id/books` - List books by author
+- `GET /books/query` - Search with filters
+  - Query params: `publisher`, `title`, `minPages`, `maxPages`
+  - Example: `/books/query?publisher=O'Reilly&minPages=200`
+- `GET /authors/:id/books` - List books by specific author
 - `POST /books` - Create new book
+  ```json
+  {
+    "title": "Book Title",
+    "publisher": "Publisher Name",
+    "price": 40,
+    "pages": 350,
+    "author": "507f1f77bcf86cd799439011"
+  }
+  ```
 - `PUT /books/:id` - Update book
 - `DELETE /books/:id` - Delete book
+
+## 🔧 Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+PORT=3000
+DB_CONNECTION_STRING=mongodb://localhost:27017/bookstore
+```
 
 ## 📂 Project Structure
 
