@@ -1,7 +1,7 @@
-import express from "express";
+import express, { Router } from "express";
 import BookController from "../controllers/bookController.js";
 
-const routes = express.Router();
+const routes: Router = express.Router();
 
 routes.get("/books", BookController.listAllBooks);
 routes.get("/books/query", BookController.listBooksByQuery); //abordagem de rota com busca por parâmetros (?param=value)

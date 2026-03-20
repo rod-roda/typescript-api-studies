@@ -2,7 +2,7 @@ import DefaultError from "./DefaultError.js";
 
 class NotFound extends DefaultError
 {
-    constructor(message = "Page not found")
+    constructor(message: string = "Page not found")
     {
         super(message, 404);
     }

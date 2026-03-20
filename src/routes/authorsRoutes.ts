@@ -1,7 +1,7 @@
-import express from "express";
+import express, { Router } from "express";
 import AuthorController from "../controllers/authorController.js";
 
-const routes = express.Router();
+const routes: Router = express.Router();
 
 routes.get("/authors", AuthorController.listAllAuthors);
 routes.get("/authors/:id", AuthorController.listAuthorById);
