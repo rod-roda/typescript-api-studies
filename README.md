@@ -38,7 +38,7 @@ RESTful API for managing books and authors, built as a study project to explore 
 
 ### 1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/rod-roda/typescript-api-studies.git
 cd api-node
 ```
 
